@@ -3,6 +3,7 @@ package com.d.stalker;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 
+import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
@@ -28,6 +29,9 @@ public class MinaClient extends IoHandlerAdapter implements Runnable{
 		context=cx;
 		
 	}
+	public void close(){
+		session.close(true);
+	}
 	public void connection(){
 		try{
 		NioSocketConnector connector = new NioSocketConnector();
@@ -47,10 +51,12 @@ public class MinaClient extends IoHandlerAdapter implements Runnable{
 		session.write(JSON.toJSONString(message));
 		
 		session.getCloseFuture().awaitUninterruptibly();//等待连接断开 
+		
 		connector.dispose();
 		System.out.println("通信结束!");
 		}catch(Exception e){
-			Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
+			System.out.println("通信异常!");
 			
 		}
 	}
@@ -59,19 +65,18 @@ public class MinaClient extends IoHandlerAdapter implements Runnable{
 		if(session!=null){
 			Log.i(TAG, "isConnected:"+session.isConnected());
 			message.setFormUser("dawn");
-		   new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
+			try{
 				if(!session.isConnected()){
-					connection();
+					new Thread(this).start();
+				}else{
+					session.write(JSON.toJSONString(message));
 				}
-				 session.write(JSON.toJSONString(message));
-				
-			}
-		}).start();
+				 
+				}catch(Exception e){
+					Log.i(TAG, "sendMessage->run is exception ,发送信息失败!");
+				}
 		}else{
-			connection();
+			new Thread(this).start();
 			Log.i(TAG, "sendMessage->session is null ,正在尝试重新连接!");
 			Toast.makeText(context, "没有可用连接!", Toast.LENGTH_SHORT).show();
 		}
