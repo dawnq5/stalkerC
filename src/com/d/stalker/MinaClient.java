@@ -18,6 +18,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.d.stalker.bean.Message;
 
 public class MinaClient extends IoHandlerAdapter implements Runnable{
 	final String TAG="MinaClient";
@@ -47,7 +48,7 @@ public class MinaClient extends IoHandlerAdapter implements Runnable{
 		Message  message=new Message();
 		message.setFormUser("dawn");
 		message.setMessage("登录");
-		message.setFlag("login");//首次登录
+		message.setCmd("login");//首次登录
 		session.write(JSON.toJSONString(message));
 		
 		session.getCloseFuture().awaitUninterruptibly();//等待连接断开 

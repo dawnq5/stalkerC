@@ -17,6 +17,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
 import com.baidu.mapapi.SDKInitializer;
+import com.d.stalker.bean.Message;
 
 public class MainActivity extends Activity {
 

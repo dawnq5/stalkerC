@@ -1,4 +1,4 @@
-package com.d.stalker;
+package com.d.stalker.bean;
 
 import java.util.Date;
 
@@ -7,7 +7,8 @@ public class Message {
 	private String toUser;
 	private Date time;
 	private String message;
-	private String flag;
+	private String cmd;
+	private Location location;
 	public String getFormUser() {
 		return formUser;
 	}
@@ -26,17 +27,23 @@ public class Message {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public String getFlag() {
-		return flag;
-	}
-	public void setFlag(String flag) {
-		this.flag = flag;
-	}
 	public String getToUser() {
 		return toUser;
 	}
 	public void setToUser(String toUser) {
 		this.toUser = toUser;
+	}
+	public String getCmd() {
+		return cmd;
+	}
+	public void setCmd(String cmd) {
+		this.cmd = cmd;
+	}
+	public Location getLocation() {
+		return location;
+	}
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 	
 	
