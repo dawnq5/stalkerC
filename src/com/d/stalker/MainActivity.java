@@ -17,6 +17,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
 import com.baidu.mapapi.SDKInitializer;
+import com.d.stalker.bean.Location;
 import com.d.stalker.bean.Message;
 
 public class MainActivity extends Activity {
@@ -64,7 +65,7 @@ public class MainActivity extends Activity {
 		LocationClientOption option = new LocationClientOption();
 		option.setLocationMode(LocationMode.Hight_Accuracy);//设置定位模式
 		option.setCoorType("bd09ll");//返回的定位结果是百度经纬度，默认值gcj02
-		int span=1000*30;
+		int span=1000*60;
 		option.setOpenGps(true);
 		option.setScanSpan(span);
 		option.setIsNeedAddress(true);
@@ -89,6 +90,11 @@ public class MainActivity extends Activity {
 			message.setText("当前位置："+location.getAddrStr());
 			
 			currentLocation=location;
+			Message  message=new Message();
+			message.setToUser("user2");
+			message.setCmd("location");
+			message.setLocation(Location.toLocation(location));
+			client.sendMessage(message);
 			System.out.println("经度："+location.getLatitude()+",维度："+location.getAltitude());
 		}
 
